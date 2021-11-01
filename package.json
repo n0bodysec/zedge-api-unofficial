@@ -1,0 +1,34 @@
+{
+  "name": "zedge-api-unofficial",
+  "version": "1.0.0",
+  "description": "An unofficial Zedge.net API",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.24.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.1.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.25.2",
+    "npm-check-updates": "^11.8.5"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n0bodysec/zedge-api-unofficial.git"
+  },
+  "keywords": [
+    "zedge",
+    "zedge.net",
+    "api",
+    "unofficial"
+  ],
+  "author": "Nobody <admin@n0bodysec.com> (https://n0bodysec.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n0bodysec/zedge-api-unofficial/issues"
+  },
+  "homepage": "https://github.com/n0bodysec/zedge-api-unofficial#readme"
+}
