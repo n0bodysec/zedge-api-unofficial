@@ -1,6 +1,6 @@
 {
   "name": "zedge-api-unofficial",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An unofficial Zedge.net API",
   "main": "index.js",
   "dependencies": {
