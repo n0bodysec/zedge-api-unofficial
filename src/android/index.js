@@ -72,6 +72,22 @@ const android = function android()
 	};
 
 	/**
+	 * Returns information of the given item id
+	 * @param {string} item
+	 * @param {number} thumbWidth
+	 * @param {number} thumbHeight
+	 * @param {number} previewWidth
+	 * @param {number} previewHeight
+	 * @returns {object}
+	 */
+	this.getItem = async (item, thumbWidth = 720, thumbHeight = 1080, previewWidth = 1440, previewHeight = 2560) =>
+	{
+		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/items/${item}?thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}`;
+		const ret = await axios.get(url);
+		return ret.data;
+	};
+
+	/**
 	 * Returns a bunch of content related to the given category of the given type
 	 * @param {string} type
 	 * @param {number} category
