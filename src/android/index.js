@@ -3,6 +3,28 @@ const constants = require('../utils/constants');
 
 const android = function android()
 {
+	this.buildUrl = (path = null, endpoint, value, extra, params) =>
+	{
+		let url = constants.API_URL_ANDROID;
+		url += (path == null ? '/content-browse-v2/v1/ANDROID/' : path);
+		url += endpoint;
+		if (value != null) url += '/' + value;
+		if (extra != null) url += '/' + extra;
+		if (params != null)
+		{
+			let args = '';
+			let i = 0;
+
+			Object.keys(params).forEach((key) =>
+			{
+				args += `${i !== 0 ? '&' : ''}${key}=${params[key]}`;
+				i++;
+			});
+			url += '?' + args;
+		}
+		return url;
+	};
+
 	/**
 	 * Returns featured content of the given module
 	 * @param {string} module
@@ -14,12 +36,10 @@ const android = function android()
 	 */
 	this.showFeatured = async (module, thumbWidth = 720, thumbHeight = 1080, previewWidth = 1440, previewHeight = 2560) =>
 	{
-		/**
-		 * lastSearchKeywords param can be added multiple times. This parameter contains the last searched keywords
-		 * e.g. &lastSearchKeywords=cat&lastSearchKeywords=dog
-		 */
+		const url = this.buildUrl(null, 'modules', module, null, {
+			thumbWidth: thumbWidth, thumbHeight: thumbHeight, previewWidth: previewWidth, previewHeight: previewHeight,
+		});
 
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/modules/${module}?thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}`;
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -37,12 +57,9 @@ const android = function android()
 	 */
 	this.browse = async (module, thumbWidth = 720, thumbHeight = 1080, previewWidth = 1440, previewHeight = 2560, page = 0, size = 120) =>
 	{
-		/**
-		 * lastSearchKeywords param can be added multiple times. This parameter contains the last searched keywords
-		 * e.g. &lastSearchKeywords=cat&lastSearchKeywords=dog
-		 */
-
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/modules/${module}/browse?thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}&page=${page}&size=${size}`;
+		const url = this.buildUrl(null, 'modules', module, 'browse', {
+			thumbWidth: thumbWidth, thumbHeight: thumbHeight, previewWidth: previewWidth, previewHeight: previewHeight, page: page, size: size,
+		});
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -66,7 +83,9 @@ const android = function android()
 		 * size 'see more' value: 120
 		 */
 
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/items/${item}/search?keyword=${keyword}&thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}&page=${page}&size=${size}`;
+		const url = this.buildUrl(null, 'items', item, 'search', {
+			thumbWidth: thumbWidth, thumbHeight: thumbHeight, previewWidth: previewWidth, previewHeight: previewHeight, page: page, size: size,
+		});
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -82,7 +101,9 @@ const android = function android()
 	 */
 	this.getItem = async (item, thumbWidth = 720, thumbHeight = 1080, previewWidth = 1440, previewHeight = 2560) =>
 	{
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/items/${item}?thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}`;
+		const url = this.buildUrl(null, 'items', item, null, {
+			thumbWidth: thumbWidth, thumbHeight: thumbHeight, previewWidth: previewWidth, previewHeight: previewHeight,
+		});
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -101,7 +122,9 @@ const android = function android()
 	 */
 	this.category = async (type, category, thumbWidth = 720, thumbHeight = 1080, previewWidth = 1440, previewHeight = 2560, page = 0, size = 120) =>
 	{
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/items/${type}/category/${category}/browse?thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}&page=${page}&size=${size}`;
+		const url = this.buildUrl(null, 'items', type, `category/${category}/browse`, {
+			thumbWidth: thumbWidth, thumbHeight: thumbHeight, previewWidth: previewWidth, previewHeight: previewHeight, page: page, size: size,
+		});
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -117,7 +140,9 @@ const android = function android()
 	 */
 	this.counts = async (keyword, thumbWidth = 720, thumbHeight = 1080, previewWidth = 1440, previewHeight = 2560) =>
 	{
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/items/${constants.itemTypes.Search}/counts?keyword=${keyword}&itemType=WALLPAPER&itemType=LIVE_WALLPAPER&itemType=RINGTONE&itemType=NOTIFICATION_SOUND&thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}`;
+		const url = this.buildUrl(null, 'items', constants.itemTypes.Search, 'counts', {
+			keyword: keyword, itemType: 'WALLPAPER', itemType: 'LIVE_WALLPAPER', itemType: 'RINGTONE', itemType: 'NOTIFICATION_SOUND', thumbWidth: thumbWidth, thumbHeight: thumbHeight, previewWidth: previewWidth, previewHeight: previewHeight, // eslint-disable-line no-dupe-keys
+		});
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -134,7 +159,9 @@ const android = function android()
 		 * discovered ctype values: 46, 112, 73, 74
 		 */
 
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/queries/related?query=${query}&ctype=${ctype}`;
+		const url = this.buildUrl(null, 'queries', null, 'related', {
+			query: query, ctype: ctype,
+		});
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -146,7 +173,7 @@ const android = function android()
 	 */
 	this.discoverSections = async (type) =>
 	{
-		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v2/ANDROID/discover-sections/${type}`;
+		const url = this.buildUrl(null, 'discover-sections', type, null, null);
 		const ret = await axios.get(url);
 		return ret.data;
 	};
@@ -162,7 +189,10 @@ const android = function android()
 	this.download = async (item, width = 1440, height = 2560, token = null) =>
 	{
 		const isLicensed = token != null;
-		const url = `${constants.API_URL_ANDROID}/download/ANDROID/${isLicensed === true ? 'LICENSED' : 'UNLICENSED'}/${item}?width=${width}&height=${height}`;
+		const url = this.buildUrl('/download/ANDROID/', isLicensed === true ? 'LICENSED' : 'UNLICENSED', item, null, {
+			width: width, height: height,
+		});
+
 		let ret = null;
 
 		if (isLicensed === true)
