@@ -135,10 +135,28 @@ const android = function android()
 		return ret.data;
 	};
 
-	this.download = async (item, width = 1440, height = 2560, token) =>
+	/**
+	 * Returns download info for the given item. It works for licensed (bearer token required) and unlicensed (null token) items
+	 * @param {string} item
+	 * @param {number} width
+	 * @param {number} height
+	 * @param {string} token
+	 * @returns {object}
+	 */
+	this.download = async (item, width = 1440, height = 2560, token = null) =>
 	{
-		const url = `${constants.API_URL_ANDROID}/download/ANDROID/LICENSED/${item}?width=${width}&height=${height}`;
-		const ret = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+		const isLicensed = token != null;
+		const url = `${constants.API_URL_ANDROID}/download/ANDROID/${isLicensed === true ? 'LICENSED' : 'UNLICENSED'}/${item}?width=${width}&height=${height}`;
+		let ret = null;
+
+		if (isLicensed === true)
+		{
+			ret = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+		}
+		else
+		{
+			ret = await axios.get(url);
+		}
 		return ret.data;
 	};
 };
