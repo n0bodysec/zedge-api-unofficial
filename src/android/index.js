@@ -72,6 +72,25 @@ const android = function android()
 	};
 
 	/**
+	 * Returns a bunch of content related to the given category of the given type
+	 * @param {string} type
+	 * @param {number} category
+	 * @param {number} thumbWidth
+	 * @param {number} thumbHeight
+	 * @param {number} previewWidth
+	 * @param {number} previewHeight
+	 * @param {number} page
+	 * @param {number} size
+	 * @returns {object}
+	 */
+	this.category = async (type, category, thumbWidth = 720, thumbHeight = 1080, previewWidth = 1440, previewHeight = 2560, page = 0, size = 120) =>
+	{
+		const url = `${constants.API_URL_ANDROID}/content-browse-v2/v1/ANDROID/items/${type}/category/${category}/browse?thumbWidth=${thumbWidth}&thumbHeight=${thumbHeight}&previewWidth=${previewWidth}&previewHeight=${previewHeight}&page=${page}&size=${size}`;
+		const ret = await axios.get(url);
+		return ret.data;
+	};
+
+	/**
 	 * Returns a count of content of all types for the given keyword
 	 * @param {string} keyword
 	 * @param {number} thumbWidth
