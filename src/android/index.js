@@ -115,6 +115,13 @@ const android = function android()
 		const ret = await axios.get(url);
 		return ret.data;
 	};
+
+	this.download = async (item, width = 1440, height = 2560, token) =>
+	{
+		const url = `${constants.API_URL_ANDROID}/download/ANDROID/LICENSED/${item}?width=${width}&height=${height}`;
+		const ret = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+		return ret.data;
+	};
 };
 
 module.exports = android;
