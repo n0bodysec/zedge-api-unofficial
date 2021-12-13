@@ -1,3 +1,3 @@
 const Zedge = require('./src');
 
-module.exports = { Zedge };
+module.exports = Zedge;
