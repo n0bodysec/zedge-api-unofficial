@@ -1,4 +1,4 @@
-const { Zedge } = require('../index');
+const Zedge = require('../index');
 const constants = require('../src/utils/constants');
 
 (async () =>
